@@ -23,7 +23,6 @@ class ClienteService:
 		try:
 			cliente = self.banco.clientes.get(cpf)
 
-			print(cliente)
 			return cliente
 		except Exception as e:
 			print(e)

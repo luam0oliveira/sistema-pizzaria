@@ -41,10 +41,22 @@ class FuncionarioService:
 	
 	def editar(self, funcionario: Funcionario):
 		try:
-			if not self.procurarPorCpf(funcionario.getCpf()):
+			antigo = self.procurarPorCpf(funcionario.getCpf())
+			if not antigo:
 				raise Exception("Funcionario não encontrado.")
 			
-			self.banco.funcionarios[funcionario.getCpf()] = funcionario
+			if funcionario.getNome():
+				self.banco.funcionarios[funcionario.getCpf()].setNome(funcionario.getNome())
+
+			if funcionario.getSalario():
+				self.banco.funcionarios[funcionario.getCpf()].setSalario(funcionario.getSalario())
+
+			if funcionario.getTelefone():
+				self.banco.funcionarios[funcionario.getCpf()].setTelefone(funcionario.getTelefone())
+			
+			if funcionario.getSalario():
+				self.banco.funcionarios[funcionario.getCpf()].setTelefone(funcionario.getTelefone())
+			
 			print("Informações atualizadas.")
 		except Exception as e:
 			print(e)

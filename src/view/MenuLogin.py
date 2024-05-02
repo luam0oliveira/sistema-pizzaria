@@ -1,4 +1,5 @@
 from controller.MenuLoginController import MenuLoginController
+from utils import clear_console, delay
 
 
 class MenuLogin:
@@ -8,6 +9,7 @@ class MenuLogin:
 		self.__run()
 
 	def __run(self):
+
 		while (self.running):
 			print("Autenticação:\n1 - Login como cliente\n2 - Login como funcionário\n3 - Registro de cliente\n0 - Sair")
 			try:
@@ -20,13 +22,14 @@ class MenuLogin:
 					case 3:
 						self.__registro_cliente()
 					case 0:
-						break
+						return False
 					case _:
 						raise Exception("Entrada invalida")
 			except KeyboardInterrupt:
 				break
 			except Exception as e:
 				print(e)
+		return True
 
 
 	def __login_cliente(self):
@@ -34,6 +37,9 @@ class MenuLogin:
 		senha = input("Digite sua senha: ")
 		
 		self.running = not self.controller.login_cliente(cpf, senha)
+
+		delay(1.5)
+		clear_console()
 
 	def __registro_cliente(self):
 		nome = input("Digite seu nome: ")
@@ -43,8 +49,14 @@ class MenuLogin:
 		
 		self.controller.registro_cliente(nome, cpf, telefone, senha)
 
+		delay(1.5)
+		clear_console()
+
 	def __login_funcionario(self):
 		cpf = input("Digite seu cpf: ")
 		senha = input("Digite sua senha: ")
 		
 		self.running = not self.controller.login_funcionario(cpf, senha)
+		
+		delay(1.5)
+		clear_console()
