@@ -9,12 +9,12 @@ class Pizza:
 		self.__sabor = sabor
 		self.__diametro = diametro
 	
-	# diametro * sabor
 	def getId(self):
 		return self.__id
 	
+	# diametro * sabor
 	def calculaPreco(self):
-		return self.__diamatro * self.__sabor.valor
+		return self.__diametro * self.__sabor.valor
 
 	def getSabor(self):
 		return self.__sabor
@@ -27,3 +27,6 @@ class Pizza:
 
 	def setDiametro(self, diametro:int):
 		self.__diametro = diametro
+	
+	def __str__(self) -> str:
+		return f"Sabor: {self.__sabor.nome}\tdiametro: {self.__diametro}\tvalor: {self.calculaPreco()}"

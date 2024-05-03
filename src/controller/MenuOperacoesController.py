@@ -131,8 +131,9 @@ class MenuOperacoesController:
 		except Exception as e:
 			print(e)
 
-	def fazer_pedido(self):
-		MenuPedido(self.clienteService.banco.usuario,
+	def fazer_pedido(self, usuario):
+		MenuPedido(usuario,
 			self.clienteService,
 			self.saborService,
 			self.complementoService)
+	

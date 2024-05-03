@@ -1,4 +1,5 @@
 from controller.MenuOperacoesController import MenuOperacoesController
+from model.Cliente import Cliente
 from model.ClienteService import ClienteService
 from model.ComplementoService import ComplementoService
 from model.Funcionario import Funcionario
@@ -9,15 +10,16 @@ from utils import clear_console, delay
 
 class MenuOperacoes:
 	def __init__(self,
-			  ehFuncionario,
+			  usuario,
 			  clienteService: ClienteService,
 			  funcionarioService:FuncionarioService = None,
 			  saborService: SaborService = None,
 			  complementoService: ComplementoService = None):
 		self.running = True
+		self.usuario = usuario
 		self.controller = MenuOperacoesController(clienteService, funcionarioService, saborService, complementoService)
 
-		if (ehFuncionario):
+		if (isinstance(usuario, Funcionario)):
 			self.__runFuncionario()
 		else:
 			self.__runCliente()
@@ -234,8 +236,9 @@ class MenuOperacoes:
 	# Caso o usuario seja um cliente
 	def __runCliente(self):
 		while (self.running):
+			clear_console()
 			print("=== Menu de ações ===")
-			print("1 - Fazer pedido\n2 - Listar pedidos pendentes\n3 - Listar pedidos concluídos\n0 - Deslogar")
+			print("1 - Fazer pedido\n2 - Confirmar pedido\n3 - Listar pedidos pendentes\n4 - Listar pedidos concluídos\n0 - Deslogar")
 			
 			try:
 				op = int(input())
@@ -243,9 +246,15 @@ class MenuOperacoes:
 					case 1:
 						self.__fazer_pedido()
 					case 2:
-						self.__editar_funcionario()
+						self.__confirmar_pedido()
 					case 3:
-						self.__excluir_funcionario()
+						clear_console()
+						self.__listar_pedidos_pendentes()
+						input("Aperte enter para prosseguir...")
+					case 4:
+						clear_console()
+						self.__listar_pedidos_concluidos()
+						input("Aperte enter para prosseguir...")
 					case 0:
 						clear_console()
 						return False					
@@ -259,5 +268,28 @@ class MenuOperacoes:
 			except Exception as e:
 				print(e)
 	
+	def __listar_pedidos_pendentes(self):
+		print("==== PENDENTES ====")
+		if isinstance(self.usuario, Cliente):
+			for i in self.usuario.pedidos:
+				if not self.usuario.pedidos[i].entregue: print(str(self.usuario.pedidos[i]) + "\n--------------------")
+		
+	def __listar_pedidos_concluidos(self):
+		print("==== CONCLUIDOS ====")
+		if isinstance(self.usuario, Cliente):
+			for i in self.usuario.pedidos:
+				if self.usuario.pedidos[i].entregue: print(str(self.usuario.pedidos[i]) + "\n--------------------")
+
+	def __confirmar_pedido(self):
+		try:
+			id = input("Digite o id do seu pedido: ")
+
+			if  id not in self.usuario.pedidos:
+				raise Exception("")
+			self.usuario.pedidos[id].entregue = True
+		except:
+			print("pedido não encontrado.")
+		
+
 	def __fazer_pedido(self):
-		self.controller.fazer_pedido()
+		self.controller.fazer_pedido(self.usuario)

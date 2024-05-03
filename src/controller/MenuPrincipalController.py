@@ -21,7 +21,7 @@ class MenuPrincipalController:
 	
 	def operacoes(self):
 		MenuOperacoes(
-			isinstance(self.banco.usuario, Funcionario),
+			self.banco.usuario,
 			self.clienteService,
 			self.funcionarioService,
 			self.saborService,

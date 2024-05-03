@@ -29,7 +29,13 @@ class MenuPedido:
 					case 3:
 						self.__listar_produtos()
 					case 4:
-						self.__finalizar()
+						st = self.__finalizar()
+						if (st):
+							print("Pedido finalizado")
+							delay(2)
+							clear_console()
+							return True
+						clear_console()
 					case 0:
 						clear_console()
 						return False					
@@ -37,12 +43,11 @@ class MenuPedido:
 						raise Exception("Entrada invalida")
 			except KeyboardInterrupt:
 				clear_console()
-				print("Cancelando operação e voltando para o menu de login.")
+				print("Cancelando operação e voltando para o menu de pedido.")
 				delay(1.5)
 				clear_console()
 			except Exception as e:
 				print(e)
-
 
 	def __pegar_endereco(self):
 		while(True):
@@ -85,6 +90,9 @@ class MenuPedido:
 		pizza = Pizza(sabores[sabor], diametro)
 
 		self.pedido.adicionar_pizza(pizza)
+		print("Pizza adicionada com sucesso.")
+		delay(1.5)
+		clear_console()
 
 	def __adicionar_complemento(self):
 		complementos = self.controller.listar_complementos()
@@ -102,9 +110,19 @@ class MenuPedido:
 
 
 		self.pedido.adicionar_complemento(complementos[complemento])
+		print("Complemento adicionado com sucesso")
+		delay(1.5)
+		clear_console()
 
 	def __finalizar(self):
-		pass
+		st = self.controller.finalizar(self.pedido)
+		if st:
+			print("Pedido finalizado com sucesso. Quando chegar, confirme em nosso sistema, por favor.")
+		else:
+			print("É necessário que tenha ao menos comprado uma pizza.")
+		delay(3)
+		clear_console()
+		return st
 
 	def __listar_produtos(self):
 		print("========== LISTA DE PRODUTOS ===========")

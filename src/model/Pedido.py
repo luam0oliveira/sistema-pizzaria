@@ -11,6 +11,7 @@ class Pedido:
 		self.endereco = None
 		self.pizzas:list[Pizza] = []
 		self.complementos:list[Complemento] = []
+		self.entregue = False
 	
 	def adicionar_pizza(self, pizza):
 		self.pizzas.append(pizza)
@@ -30,4 +31,4 @@ class Pedido:
 		return valor
 
 	def __str__(self) -> str:
-		print("")
+		return f"Id de pedido: {self.id}\nEndereco:{self.endereco}\nTotal: {self.calculaTotal()}"

@@ -1,5 +1,7 @@
+from model.Cliente import Cliente
 from model.ClienteService import ClienteService
 from model.ComplementoService import ComplementoService
+from model.Pedido import Pedido
 from model.SaborService import SaborService
 
 
@@ -18,5 +20,11 @@ class MenuPedidoController:
 	def listar_complementos(self):
 		return self.complementoService.listar()
 
-	def fazer_pedido(self):
-		pass
+	def finalizar(self, pedido:Pedido):
+		try:
+			if isinstance(self.clienteService.banco.usuario, Cliente) and len(pedido.pizzas) != 0: 
+				self.clienteService.banco.usuario.pedidos[pedido.id] = pedido
+				return True
+			return False
+		except Exception as e:
+			return False
