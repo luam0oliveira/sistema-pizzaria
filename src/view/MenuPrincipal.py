@@ -10,16 +10,17 @@ class MenuPrincipal:
 
 	def run(self):
 		clear_console()
-		print("=== Bem vindo a pizzaria AHHAHASHDU! ===")
 
 		while (self.running):
+			print("=== Bem vindo a pizzaria AHHAHASHDU! ===")
+			
 			# autenticacao e registro de usuario 
 			self.controller.login()
 			
 			if not self.controller.banco.usuario: return
 
-			self.running = self.controller.operacoes()
-
+			self.controller.operacoes()
+			clear_console()
 
 
 

@@ -17,6 +17,11 @@ class FuncionarioService:
 		self.banco.usuario = funcionario
 		
 		return True
+	
+	def listar(self):
+		funcionarios = self.banco.funcionarios
+
+		return funcionarios
 
 	def procurarPorCpf(self, cpf: str):
 		try:

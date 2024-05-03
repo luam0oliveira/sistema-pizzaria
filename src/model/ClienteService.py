@@ -17,6 +17,10 @@ class ClienteService:
 		self.banco.usuario = cliente
 		
 		return True
+
+	def deslogar(self):
+		self.banco.usuario = None
+		return True
 			
 
 	def procurarPorCpf(self, cpf: str):

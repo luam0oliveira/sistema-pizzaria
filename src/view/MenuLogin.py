@@ -22,11 +22,15 @@ class MenuLogin:
 					case 3:
 						self.__registro_cliente()
 					case 0:
-						return False
+						self.__deslogar()
+						return True
 					case _:
 						raise Exception("Entrada invalida")
 			except KeyboardInterrupt:
-				break
+				clear_console()
+				print("Cancelando operação e voltando para o menu de login.")
+				delay(1.5)
+				clear_console()
 			except Exception as e:
 				print(e)
 		return True
@@ -60,3 +64,6 @@ class MenuLogin:
 		
 		delay(1.5)
 		clear_console()
+	
+	def __deslogar(self):
+		self.controller.deslogar()

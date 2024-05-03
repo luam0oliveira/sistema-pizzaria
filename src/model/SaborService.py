@@ -6,6 +6,13 @@ class SaborService:
 	def __init__(self, banco: Banco):
 		self.banco = banco
 
+	def listar(self):
+		try:
+			sabores = self.banco.sabores
+			return sabores
+		except:
+			print("!!!")
+
 	def procurarPorId(self, id: str):
 		try:
 			sabor = self.banco.sabores[id]
@@ -31,7 +38,7 @@ class SaborService:
 		try:
 			if not self.procurarPorId(sabor.id):
 				raise Exception("Sabor não encontrado.")
-			
+
 			self.banco.sabores[sabor.id] = sabor
 			print("Informações atualizadas.")
 		except Exception as e:

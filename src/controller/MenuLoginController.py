@@ -8,7 +8,12 @@ class MenuLoginController:
 		self.funcionarioService = funcionarioService
 		self.clienteService = clienteService
 	
-
+	def deslogar(self):
+		try:
+			self.clienteService.deslogar()
+			return True
+		except:
+			print("")
 	def login_cliente(self, login, senha):
 		try:
 			self.clienteService.login(login, senha)
