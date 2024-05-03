@@ -10,6 +10,8 @@ class Usuario(Pessoa):
 		self.__login = self.getCpf()
 		self.__hashSenha = hashpw(senha.encode(), gensalt(8))
 	
+	def getId(self):
+		return self.__id
 
 	def login(self, senha:str):
 		return checkpw(senha.encode(), self.__hashSenha)

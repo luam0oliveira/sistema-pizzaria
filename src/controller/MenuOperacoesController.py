@@ -7,6 +7,7 @@ from model.FuncionarioService import FuncionarioService
 from model.Sabor import Sabor
 from model.SaborService import SaborService
 from utils import emptyToNone
+from view.MenuPedido import MenuPedido
 
 
 class MenuOperacoesController:
@@ -130,3 +131,8 @@ class MenuOperacoesController:
 		except Exception as e:
 			print(e)
 
+	def fazer_pedido(self):
+		MenuPedido(self.clienteService.banco.usuario,
+			self.clienteService,
+			self.saborService,
+			self.complementoService)

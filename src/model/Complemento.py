@@ -2,8 +2,8 @@ from uuid import uuid4
 
 
 class Complemento:
-	def __init__(self, nome:str, valor:float):
-		self.__id = str(uuid4())
+	def __init__(self, nome:str, valor:float, id=str(uuid4())):
+		self.__id = id
 		self.__nome = nome
 		self.__valor = valor
 	

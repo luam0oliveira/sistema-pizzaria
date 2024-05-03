@@ -5,11 +5,14 @@ from model.Sabor import Sabor
 
 class Pizza:
 	def __init__(self, sabor:Sabor, diametro: int):
-		self.__id = uuid4()
+		self.__id = str(uuid4())
 		self.__sabor = sabor
 		self.__diametro = diametro
 	
 	# diametro * sabor
+	def getId(self):
+		return self.__id
+	
 	def calculaPreco(self):
 		return self.__diamatro * self.__sabor.valor
 

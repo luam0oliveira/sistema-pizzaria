@@ -231,5 +231,33 @@ class MenuOperacoes:
 		except:
 			print("!!!")
 
+	# Caso o usuario seja um cliente
 	def __runCliente(self):
-		pass
+		while (self.running):
+			print("=== Menu de ações ===")
+			print("1 - Fazer pedido\n2 - Listar pedidos pendentes\n3 - Listar pedidos concluídos\n0 - Deslogar")
+			
+			try:
+				op = int(input())
+				match op:
+					case 1:
+						self.__fazer_pedido()
+					case 2:
+						self.__editar_funcionario()
+					case 3:
+						self.__excluir_funcionario()
+					case 0:
+						clear_console()
+						return False					
+					case _:
+						raise Exception("Entrada invalida")
+			except KeyboardInterrupt:
+				clear_console()
+				print("Cancelando operação e voltando para o menu de login.")
+				delay(1.5)
+				clear_console()
+			except Exception as e:
+				print(e)
+	
+	def __fazer_pedido(self):
+		self.controller.fazer_pedido()
