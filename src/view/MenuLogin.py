@@ -23,7 +23,7 @@ class MenuLogin:
 						self.__registro_cliente()
 					case 0:
 						self.__deslogar()
-						return True
+						return
 					case _:
 						raise Exception("Entrada invalida")
 			except KeyboardInterrupt:
@@ -33,7 +33,7 @@ class MenuLogin:
 				clear_console()
 			except Exception as e:
 				print(e)
-		return True
+
 
 
 	def __login_cliente(self):
