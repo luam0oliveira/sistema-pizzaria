@@ -10,8 +10,8 @@ class ComplementoService:
 		try:
 			complemento = self.banco.complementos[id]
 			return complemento
-		except:
-			print("Não foi encontrado")
+		except Exception as e:
+			print(e)
 
 
 	def listar(self):
@@ -23,6 +23,7 @@ class ComplementoService:
 	def excluir(self, complemento: Complemento):
 		try:
 			self.banco.complementos.pop(complemento.getId())
+			print("Complemento excluido")
 		except:
 			print("Complemento não encontrado.")
 	

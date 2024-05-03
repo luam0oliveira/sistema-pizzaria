@@ -27,7 +27,7 @@ class MenuOperacoes:
 			print("=== Menu de ações ===")
 			print("1 - Adicionar funcionário\n2 - Editar funcionário\n3 - Excluir funcionário\n4 - Listar funcionários")
 			print("5 - Adicionar sabor\n6 - Editar sabor\n7 - Excluir sabor\n8 - Listar sabores")
-			print("7 - Adicionar complemento\n8 - Editar complemento\n9 - Excluir complemento\n0 - Deslogar")
+			print("9 - Adicionar complemento\n10 - Editar complemento\n11 - Excluir complemento\n12 - Listar complementos\n0 - Deslogar")
 			
 			try:
 				op = int(input())
@@ -49,7 +49,13 @@ class MenuOperacoes:
 					case 8:
 						self.__listar_sabores()
 					case 9:
-						pass
+						self.__criar_complemento()
+					case 10:
+						self.__editar_complemento()
+					case 11:
+						self.__excluir_complemento()
+					case 12:
+						self.__listar_complementos()
 					case 0:
 						clear_console()
 						return False					
@@ -152,7 +158,7 @@ class MenuOperacoes:
 
 			while(True):
 				try:
-					valor = input("Digite o valor do sabor(o valor final da pizza será esse valor * diametro): ")
+					valor = float(input("Digite o valor do sabor(o valor final da pizza será esse valor * diametro): "))
 					if valor > 0:
 						break
 				except ValueError:
@@ -176,6 +182,54 @@ class MenuOperacoes:
 			print(sabores[i])
 			print("-----------------------")
 
+	def __listar_complementos(self):
+		
+		print("=== COMPLEMENTOS ===")
+		complementos = self.controller.listar_complementos()
+		for i in complementos:
+			print(i)
+			print(complementos[i])
+			print("-----------------------")
+
+	def __criar_complemento(self):
+		try:
+			nome = input("Digite o nome do complemento: ")
+			
+			while(True):
+				try:
+					valor = float(input("Digite o valor do complemento: "))
+					if valor > 0:
+						break
+				except:
+					print("Valor inválido. Digite novamente.")
+			
+			self.controller.adicionar_complemento(nome, valor)
+		except:
+			print("!!")
+
+	def __editar_complemento(self):
+		try:
+			id = input("Digite o id do complemento: ")
+
+			nome = input("Digite o nome do complemento: ")
+
+			while(True):
+				try:
+					valor = float(input("Digite o valor do complemento: "))
+					if valor > 0:
+						break
+				except ValueError:
+					print("Valor inválido. Digite novamente.")
+			self.controller.editar_complemento(id, nome, valor)
+		except ValueError:
+			print("!!")
+
+	def __excluir_complemento(self):
+		try:
+			id = input("Digite o id do complemento:")
+			self.controller.excluir_complemento(id)
+		except:
+			print("!!!")
 
 	def __runCliente(self):
 		pass

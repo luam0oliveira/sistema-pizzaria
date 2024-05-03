@@ -1,5 +1,6 @@
 from model.Cliente import Cliente
 from model.ClienteService import ClienteService
+from model.Complemento import Complemento
 from model.ComplementoService import ComplementoService
 from model.Funcionario import Funcionario
 from model.FuncionarioService import FuncionarioService
@@ -17,6 +18,7 @@ class MenuOperacoesController:
 		self.funcionarioService = funcionarioService
 		self.clienteService = clienteService
 		self.saborService = saborService
+		self.complementoService = complementoService
 	
 
 	def listar_funcionarios(self):
@@ -58,7 +60,7 @@ class MenuOperacoesController:
 		except Exception as e:
 			print(e)
 			
-
+	
 	def adicionar_sabor(self, nome, valor):
 		try:
 			sabor = Sabor(nome, valor)
@@ -92,3 +94,39 @@ class MenuOperacoesController:
 			return sabores
 		except Exception as e:
 			print(e)
+	
+	
+	def listar_complementos(self):
+		try:
+			complementos = self.complementoService.listar()
+			return complementos
+		except Exception as e:
+			print(e)
+	
+	def adicionar_complemento(self, nome, valor):
+		try:
+			complemento = Complemento(nome, valor)
+			if self.complementoService.criar(complemento):
+				print("Criado com sucesso")
+		except Exception as e:
+			print(e)
+
+	def editar_complemento(self, id, nome, valor):
+		try:
+			complemento = Complemento(emptyToNone(nome), emptyToNone(valor))
+			complemento.setId(id)
+			self.complementoService.editar(complemento)
+		except Exception as e:
+			print(e)
+
+	def excluir_complemento(self, id):
+		try:
+			complemento = self.complementoService.procurarPorId(id)
+
+			if not complemento:
+				raise Exception("Complemento não existe")
+			
+			self.complementoService.excluir(complemento)
+		except Exception as e:
+			print(e)
+
