@@ -6,6 +6,7 @@ class MenuPrincipal:
 	def __init__(self):
 		self.controller = MenuPrincipalController()
 		self.running = True
+		
 		self.run()
 
 	def run(self):

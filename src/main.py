@@ -1,7 +1,7 @@
 
 
 
-from view.MenuPrincipal import MenuPrincipal
+from telas.MenuPrincipal import MenuPrincipal
 
 
 MenuPrincipal()
