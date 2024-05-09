@@ -1,6 +1,6 @@
 from uuid import uuid4
 
-from model.Sabor import Sabor
+from Sabor import Sabor
 
 
 class Pizza:

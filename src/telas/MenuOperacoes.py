@@ -1,25 +1,16 @@
-from controller.MenuOperacoesController import MenuOperacoesController
-from model.Cliente import Cliente
-from model.ClienteService import ClienteService
-from model.ComplementoService import ComplementoService
-from model.Funcionario import Funcionario
-from model.FuncionarioService import FuncionarioService
-from model.SaborService import SaborService
+from Banco import Banco
+from Cliente import Cliente
+from Funcionario import Funcionario
 from utils import clear_console, delay
 
 
 class MenuOperacoes:
-	def __init__(self,
-			  usuario,
-			  clienteService: ClienteService,
-			  funcionarioService:FuncionarioService = None,
-			  saborService: SaborService = None,
-			  complementoService: ComplementoService = None):
+	def __init__(self, banco: Banco):
 		self.running = True
-		self.usuario = usuario
-		self.controller = MenuOperacoesController(clienteService, funcionarioService, saborService, complementoService)
+		self.banco = banco
+		self.usuario = self.banco.usuario
 
-		if (isinstance(usuario, Funcionario)):
+		if (isinstance(self.usuario, Funcionario)):
 			self.__runFuncionario()
 		else:
 			self.__runCliente()
@@ -92,8 +83,10 @@ class MenuOperacoes:
 			delay(2)
 			clear_console()
 			return
-		self.controller.adicionar_funcionario(nome, cpf, telefone, senha, salario)
-
+		
+		funcionario = Funcionario(str(self.banco.createFuncionarioId()), nome, cpf, telefone, senha, salario)
+		self.banco.adicionarFuncionario(funcionario)
+		print("Funcionario cadastrado com sucesso.")
 		delay(1.5)
 		clear_console()
 
@@ -106,15 +99,30 @@ class MenuOperacoes:
 				if cpf != "":
 					break
 				print("É necessário que preencha o cpf do funcionario")
+			funcionario = self.banco.getFuncionarioPorCpf(cpf)
+
 			nome = input("Digite o nome: ")
+			if nome != "":
+				funcionario.setNome(nome)
+			
 			telefone = input("Digite o telefone: ")
+			if telefone != "":
+				funcionario.setTelefone(telefone)
 			salario = float(input("Digite o salário: "))
+			if salario >= 0:
+				funcionario.setSalario(salario)
 		except ValueError:
 			salario = ""
 			delay(1.5)
 			clear_console()
+		except Exception as e:
+			print(e)
+			delay(1.5)
+			clear_console()
+			return
 
-		self.controller.editar_funcionario(nome, cpf, telefone, salario)
+		self.banco.editarFuncionario(funcionario)
+		print("Funcionário editado com sucesso")
 
 		delay(1.5)
 		clear_console()
@@ -126,7 +134,15 @@ class MenuOperacoes:
 				break
 			print("É necessário que preencha o cpf do funcionario")
 		
-		self.controller.excluir_funcionario(cpf)
+		try:
+			funcionario = self.banco.getFuncionarioPorCpf(cpf)
+		
+			self.banco.removerFuncionario(funcionario)
+		except Exception as e:
+			print(e)
+			delay(1.5)
+			clear_console()
+			return
 	
 	def __listar_funcionarios(self):
 		clear_console()

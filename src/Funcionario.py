@@ -1,9 +1,9 @@
-from model.Usuario import Usuario
+from Usuario import Usuario
 
 
 class Funcionario(Usuario):
-	def __init__(self, nome: str, cpf: str, telefone: str, senha: str, salario: float):
-		super().__init__(nome, cpf, telefone, senha)
+	def __init__(self, id:int, nome: str, cpf: str, telefone: str, senha: str, salario: float):
+		super().__init__(id, nome, cpf, telefone, senha)
 		self.__salario = salario
 	
 	def getSalario(self):

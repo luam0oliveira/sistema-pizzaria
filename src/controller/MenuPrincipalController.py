@@ -5,7 +5,7 @@ from model.Funcionario import Funcionario
 from model.FuncionarioService import FuncionarioService
 from model.SaborService import SaborService
 from view.MenuLogin import MenuLogin
-from view.MenuOperacoes import MenuOperacoes
+from telas.MenuOperacoes import MenuOperacoes
 
 
 class MenuPrincipalController:

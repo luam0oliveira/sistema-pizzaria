@@ -1,7 +1,7 @@
 from uuid import uuid4
 
-from model.Complemento import Complemento
-from model.Pizza import Pizza
+from Complemento import Complemento
+from Pizza import Pizza
 
 
 class Pedido:

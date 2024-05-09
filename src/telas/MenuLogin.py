@@ -1,6 +1,5 @@
 from logging import raiseExceptions
 from Cliente import Cliente
-from controller.MenuLoginController import MenuLoginController
 from utils import clear_console, delay
 
 
@@ -24,12 +23,18 @@ class MenuLogin:
 					case 3:
 						self.__registro_cliente()
 					case 0:
+						self.__deslogar()
 						return
 					case _:
 						raise Exception("Entrada invalida")
 			except KeyboardInterrupt:
 				clear_console()
 				print("Cancelando operação e voltando para o menu de login.")
+				delay(1.5)
+				clear_console()
+			except ValueError:
+				clear_console()
+				print("Entrada inválida.")
 				delay(1.5)
 				clear_console()
 			except Exception as e:
@@ -91,3 +96,7 @@ class MenuLogin:
 		
 		delay(1.5)
 		clear_console()
+	
+
+	def __deslogar(self):
+		self.banco.usuario = None

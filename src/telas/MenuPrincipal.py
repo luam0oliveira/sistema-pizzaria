@@ -1,4 +1,5 @@
 from Banco import Banco
+from telas.MenuOperacoes import MenuOperacoes
 from utils import clear_console, delay
 from telas.MenuLogin import MenuLogin
 
@@ -20,8 +21,6 @@ class MenuPrincipal:
 				self.login()
 				
 				if not self.banco.usuario: return
-				else: print(self.banco.usuario)
-				delay(5)
 
 				self.operacoes()
 				clear_console()
@@ -33,10 +32,4 @@ class MenuPrincipal:
 	
 
 	def operacoes(self):
-		pass
-	
-
-			
-	
-
-	
+		MenuOperacoes(self.banco)
