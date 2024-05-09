@@ -15,7 +15,6 @@ class MenuLogin:
 			print("Autenticação:\n1 - Login como cliente\n2 - Login como funcionário\n3 - Registro de cliente\n0 - Sair")
 			try:
 				op = int(input())
-				print(self.banco.funcionarios)
 				match op:
 					case 1:
 						self.__login_cliente()
@@ -31,18 +30,18 @@ class MenuLogin:
 			except KeyboardInterrupt:
 				clear_console()
 				print("Cancelando operação e voltando para o menu de login.")
-				delay(1.5)
-				clear_console()
 			except ValueError:
 				clear_console()
 				print("Entrada inválida.")
-				delay(1.5)
-				clear_console()
 			except Exception as e:
 				print(e)
+			delay(1.5)
+			clear_console()
 
 
 	def __login_cliente(self):
+		clear_console()
+		print("==== Login de cliente ====")
 		cpf = input("Digite seu cpf: ")
 		senha = input("Digite sua senha: ")
 		
@@ -56,10 +55,10 @@ class MenuLogin:
 			raise Exception("Combinacao cpf senha não encontrado.")
 		print("Cliente autenticado.")
 		self.banco.usuario = self.banco.clientes[cpf]
-		delay(1.5)
-		clear_console()
 
 	def __registro_cliente(self):
+		clear_console()
+		print("==== Registro de cliente ====")
 		nome = input("Digite seu nome: ")
 		telefone = input("Digite seu telefone: ")
 		cpf = input("Digite seu cpf: ")
@@ -77,10 +76,10 @@ class MenuLogin:
 
 		self.banco.cliente[cpf] = cliente
 		print("Cliente cadastrado com sucesso.")
-		delay(1.5)
-		clear_console()
 
 	def __login_funcionario(self):
+		clear_console()
+		print("==== Login de funcionario ====")
 		cpf = input("Digite seu cpf: ")
 		senha = input("Digite sua senha: ")
 		
@@ -94,10 +93,6 @@ class MenuLogin:
 			raise Exception("Combinacao cpf senha não encontrado.")
 		self.banco.usuario = self.banco.funcionarios[cpf]
 		print("Funcionario autenticado.")
-		
-		delay(1.5)
-		clear_console()
 	
-
 	def __deslogar(self):
 		self.banco.usuario = None

@@ -1,8 +1,12 @@
+from ast import ExceptHandler
+from turtle import clear
 from Banco import Banco
 from Cliente import Cliente
+from Complemento import Complemento
 from Funcionario import Funcionario
 from Sabor import Sabor
 from utils import clear_console, delay
+from telas.MenuPedido import MenuPedido
 
 
 class MenuOperacoes:
@@ -16,6 +20,7 @@ class MenuOperacoes:
 		else:
 			self.__runCliente()
 
+	# menu caso o usuario seja funcionario
 	def __runFuncionario(self):
 		while (self.running):
 			print("=== Menu de ações ===")
@@ -62,8 +67,56 @@ class MenuOperacoes:
 				clear_console()
 			except Exception as e:
 				print(e)
+
+	# menu caso o usuario seja um cliente
+	def __runCliente(self):
+		while (self.running):
+			clear_console()
+			print("=== Menu de ações ===")
+			print("1 - Fazer pedido\n2 - Confirmar pedido\n3 - Listar pedidos pendentes\n4 - Listar pedidos concluídos\n0 - Deslogar")
 			
+			try:
+				op = int(input())
+				match op:
+					case 1:
+						self.__fazer_pedido()
+					case 2:
+						self.__confirmar_pedido()
+					case 3:
+						clear_console()
+						self.__listar_pedidos_pendentes()
+						input("Aperte enter para prosseguir...")
+					case 4:
+						clear_console()
+						self.__listar_pedidos_concluidos()
+						input("Aperte enter para prosseguir...")
+					case 0:
+						clear_console()
+						return False					
+					case _:
+						raise Exception("Entrada invalida")
+			except KeyboardInterrupt:
+				clear_console()
+				print("Cancelando operação e voltando para o menu de login.")
+				delay(1.5)
+				clear_console()
+			except Exception as e:
+				print(e)
+
+	# Metodos relacionados a funcionario
+	def __listar_funcionarios(self):
+		clear_console()
+		print("=== FUNCIONARIOS ===")
+		funcionarios = self.banco.getFuncionarios()
+		for i in funcionarios:
+			print(funcionarios[i])
+			print("-----------------------")
+		input("Aperte ENTER para voltar ao menu.")
+		clear_console()
+
 	def __adicionar_funcionario(self):
+		clear_console()
+		print("=== Adicionando novo funcionario ===")
 		try:
 			print("\n\nAperte Control-C para cancelar a operação")
 			nome = input("Digite seu nome: ")
@@ -92,6 +145,8 @@ class MenuOperacoes:
 		clear_console()
 
 	def __editar_funcionario(self):
+		clear_console()
+		print("=== Editando funcionario ===")
 		try:
 			print("\n\nAperte Control-C para cancelar a operação")
 			print("Caso não queria mudar algum campo, não digite nada e aperte Enter")
@@ -129,6 +184,8 @@ class MenuOperacoes:
 		clear_console()
 
 	def __excluir_funcionario(self):
+		clear_console()
+		print("=== Excluindo funcionario ===")
 		while(True):
 			cpf = input("Digite o cpf: ")
 			if cpf != "":
@@ -145,16 +202,21 @@ class MenuOperacoes:
 			delay(1.5)
 			clear_console()
 			return
-	
-	def __listar_funcionarios(self):
+
+	# metodos relacionados a sabores
+	def __listar_sabores(self):
 		clear_console()
-		print("=== FUNCIONARIOS ===")
-		funcionarios = self.banco.getFuncionarios()
-		for i in funcionarios:
-			print(funcionarios[i])
+		print("=== SABORES ===")
+		sabores = self.banco.getSabores()
+		for i in sabores:
+			print(sabores[i])
 			print("-----------------------")
+		input("Aperte ENTER para voltar ao menu.")
+		clear_console()
 
 	def __adicionar_sabor(self):
+		clear_console()
+		print("=== Adicionando novo sabor ===")
 		try:
 			nome = input("Digite o nome do sabor: ")
 			
@@ -172,6 +234,8 @@ class MenuOperacoes:
 			delay(1.5)
 
 	def __editar_sabor(self):
+		clear_console()
+		print("=== Editando sabor ===")
 		try:
 			while (True):
 				id = input("Digite o id do sabor: ")
@@ -200,7 +264,6 @@ class MenuOperacoes:
 			self.banco.editarSabor(sabor)
 		except ValueError:
 			print("!!")
-
 		except Exception as e:
 			print(e)
 			delay(1.5)
@@ -208,30 +271,35 @@ class MenuOperacoes:
 			return
 
 	def __excluir_sabor(self):
+		print("=== Excluindo sabor ===")
+
 		try:
 			id = input("Digite o id do sabor:")
-			self.controller.excluir_sabor(id)
-		except:
-			print("!!!")
-	
-	def __listar_sabores(self):
-		clear_console()
-		print("=== SABORES ===")
-		sabores = self.banco.getSabores()
-		for i in sabores:
-			print(sabores[i])
-			print("-----------------------")
+			
+			sabor = self.banco.getSaborPorId(id)
 
+			self.banco.removerSabor(id)
+			print("Sabor excluido.")
+		except Exception as e:
+			print(e)
+		delay(1.5)
+		clear_console()
+		return
+	
+	# metodos relacionados a complementos
 	def __listar_complementos(self):
-		
+		clear_console()
 		print("=== COMPLEMENTOS ===")
-		complementos = self.controller.listar_complementos()
+		complementos = self.banco.getComplementos()
 		for i in complementos:
 			print(i)
 			print(complementos[i])
 			print("-----------------------")
+		input("Aperte ENTER para voltar ao menu.")
+		clear_console()
 
 	def __criar_complemento(self):
+		print("=== Adicionando complemento ===")
 		try:
 			nome = input("Digite o nome do complemento: ")
 			
@@ -240,72 +308,71 @@ class MenuOperacoes:
 					valor = float(input("Digite o valor do complemento: "))
 					if valor > 0:
 						break
-				except:
+					else:
+						raise Exception("O valor precisa ser maior que 0.")
+				except ValueError:
 					print("Valor inválido. Digite novamente.")
+				except Exception as e:
+					print(e)
 			
-			self.controller.adicionar_complemento(nome, valor)
+			complemento = Complemento(self.banco.createComplementoId(), nome, valor)
+
+			self.banco.adicionarComplemento(complemento)
+			print("Complemento criado com sucesso.")
 		except:
 			print("!!")
+		delay(1.5)
+		clear_console()
+		return
 
 	def __editar_complemento(self):
+		print("=== Editando complemento ===")
 		try:
 			id = input("Digite o id do complemento: ")
 
-			nome = input("Digite o nome do complemento: ")
+			complemento = self.banco.getComplementoPorId(id)
 
+			nome = input("Digite o nome do complemento: ")
+			
+			if nome != "":
+				complemento.setNome(nome)
+			
 			while(True):
 				try:
-					valor = float(input("Digite o valor do complemento: "))
-					if valor > 0:
+					valor = input("Digite o valor do complemento: ")
+					if valor == "":
 						break
+					if valor > 0:
+						valor = float(valor)
+						complemento.setValor(valor)
+						break
+					else:
+						raise Exception("O valor precisa ser maior que 0.")
 				except ValueError:
 					print("Valor inválido. Digite novamente.")
-			self.controller.editar_complemento(id, nome, valor)
-		except ValueError:
-			print("!!")
-
+			self.banco.editarComplemento(complemento)
+			print("Complemento cadastrado com sucesso.")
+		except Exception as e:
+			print(e)
+		
+		delay(1.5)
+		clear_console()
+		return
+		
 	def __excluir_complemento(self):
+		print("=== Excluindo complemento ===")
 		try:
 			id = input("Digite o id do complemento:")
-			self.controller.excluir_complemento(id)
-		except:
-			print("!!!")
+			complemento = self.banco.getComplementoPorId(id)
+			self.banco.removerComplemento(complemento)
+		except Exception as e:
+			print(e)
+		
+		delay(1.5)
+		clear_console()
+		return
 
-	# Caso o usuario seja um cliente
-	def __runCliente(self):
-		while (self.running):
-			clear_console()
-			print("=== Menu de ações ===")
-			print("1 - Fazer pedido\n2 - Confirmar pedido\n3 - Listar pedidos pendentes\n4 - Listar pedidos concluídos\n0 - Deslogar")
-			
-			try:
-				op = int(input())
-				match op:
-					case 1:
-						self.__fazer_pedido()
-					case 2:
-						self.__confirmar_pedido()
-					case 3:
-						clear_console()
-						self.__listar_pedidos_pendentes()
-						input("Aperte enter para prosseguir...")
-					case 4:
-						clear_console()
-						self.__listar_pedidos_concluidos()
-						input("Aperte enter para prosseguir...")
-					case 0:
-						clear_console()
-						return False					
-					case _:
-						raise Exception("Entrada invalida")
-			except KeyboardInterrupt:
-				clear_console()
-				print("Cancelando operação e voltando para o menu de login.")
-				delay(1.5)
-				clear_console()
-			except Exception as e:
-				print(e)
-	
+	# metodos relacionados a pedidos
 	def __listar_pedidos_pendentes(self):
 		print("==== PENDENTES ====")
 		if isinstance(self.usuario, Cliente):
@@ -323,11 +390,12 @@ class MenuOperacoes:
 			id = input("Digite o id do seu pedido: ")
 
 			if  id not in self.usuario.pedidos:
-				raise Exception("")
+				raise Exception("Pedido não encontrado.")
 			self.usuario.pedidos[id].entregue = True
-		except:
-			print("pedido não encontrado.")
-		
+		except Exception as e:
+			print(e)
+		delay(1.5)
 
+		
 	def __fazer_pedido(self):
-		self.controller.fazer_pedido(self.usuario)
+		MenuPedido(self.banco)

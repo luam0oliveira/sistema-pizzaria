@@ -1,16 +1,17 @@
-from controller.MenuPedidoController import MenuPedidoController
-from model.Endereco import Endereco
-from model.Pedido import Pedido
-from model.Pizza import Pizza
-from model.Usuario import Usuario
+from turtle import clear
+from Banco import Banco
+from Endereco import Endereco
+from Pedido import Pedido
+from Pizza import Pizza
+from Usuario import Usuario
 from utils import clear_console, delay
 
 
 class MenuPedido:
-	def __init__(self, usuario:Usuario, clienteService, saborService, complementoService):
-		self.controller = MenuPedidoController(clienteService, saborService, complementoService)
-		self.usuario = usuario
-		self.pedido = Pedido(self.usuario.getId())
+	def __init__(self, banco:Banco):
+		self.banco = banco
+		self.usuario = self.banco.usuario
+		self.pedido = Pedido(self.banco.createPedidoId(), self.usuario.getId())
 		self.__run()
 	
 	def __run(self):
@@ -50,6 +51,8 @@ class MenuPedido:
 				print(e)
 
 	def __pegar_endereco(self):
+		clear_console()
+		print("==== Endereco do pedido ====")
 		while(True):
 			rua = input("Digite sua rua: ")
 			numero = input("Digite sua numero: ")
@@ -65,7 +68,9 @@ class MenuPedido:
 		return Endereco(rua, numero, bairro, complemento, cidade, estado, cep)
 
 	def __adicionar_pizza(self):
-		sabores = self.controller.listar_sabores()
+		clear_console()
+		print("==== Adicionando pizza ====")
+		sabores = self.banco.getSabores()
 		while(True):
 			print("SABORES DISPONIVEIS (somente 1): ")
 			for i in sabores:
@@ -76,7 +81,10 @@ class MenuPedido:
 
 			if sabor in sabores:
 				break
+			
 			print("Sabor desconhecido, por favor digite novamente.")
+			delay(2.5)
+			clear_console()
 
 		while(True):
 			try:
@@ -95,7 +103,9 @@ class MenuPedido:
 		clear_console()
 
 	def __adicionar_complemento(self):
-		complementos = self.controller.listar_complementos()
+		clear_console()
+		print("==== Adicionando complemento ====")
+		complementos = self.banco.getComplementos()
 		while(True):
 			print("COMPLEMENTOS DISPONIVEIS (somente 1): ")
 			for i in complementos:
@@ -107,7 +117,8 @@ class MenuPedido:
 			if complemento in complementos:
 				break
 			print("Sabor desconhecido, por favor digite novamente.")
-
+			delay(2.5)
+			clear_console()
 
 		self.pedido.adicionar_complemento(complementos[complemento])
 		print("Complemento adicionado com sucesso")
@@ -115,7 +126,8 @@ class MenuPedido:
 		clear_console()
 
 	def __finalizar(self):
-		st = self.controller.finalizar(self.pedido)
+		st = self.banco.finalizar_pedido(self.pedido)
+		print(st)
 		if st:
 			print("Pedido finalizado com sucesso. Quando chegar, confirme em nosso sistema, por favor.")
 		else:
@@ -125,6 +137,7 @@ class MenuPedido:
 		return st
 
 	def __listar_produtos(self):
+		clear_console()
 		print("========== LISTA DE PRODUTOS ===========")
 		
 		for i in self.pedido.pizzas:
@@ -134,6 +147,8 @@ class MenuPedido:
 		for i in self.pedido.complementos:
 			print(i)
 		print("--------------------")
+		input("Aperte ENTER para voltar para o menu de pedido.")
+		clear_console()
 	
 
 		

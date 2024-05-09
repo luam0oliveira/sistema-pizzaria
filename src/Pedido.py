@@ -5,8 +5,8 @@ from Pizza import Pizza
 
 
 class Pedido:
-	def __init__(self, usuario_id: str):
-		self.id = str(uuid4())
+	def __init__(self, id:str , usuario_id: str):
+		self.id = id
 		self.usuario_id = usuario_id
 		self.endereco = None
 		self.pizzas:list[Pizza] = []
