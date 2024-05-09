@@ -1,6 +1,7 @@
 from Banco import Banco
 from Cliente import Cliente
 from Funcionario import Funcionario
+from Sabor import Sabor
 from utils import clear_console, delay
 
 
@@ -136,8 +137,9 @@ class MenuOperacoes:
 		
 		try:
 			funcionario = self.banco.getFuncionarioPorCpf(cpf)
-		
+
 			self.banco.removerFuncionario(funcionario)
+			print("Funcionário excluido.")
 		except Exception as e:
 			print(e)
 			delay(1.5)
@@ -147,7 +149,7 @@ class MenuOperacoes:
 	def __listar_funcionarios(self):
 		clear_console()
 		print("=== FUNCIONARIOS ===")
-		funcionarios = self.controller.listar_funcionarios()
+		funcionarios = self.banco.getFuncionarios()
 		for i in funcionarios:
 			print(funcionarios[i])
 			print("-----------------------")
@@ -163,16 +165,27 @@ class MenuOperacoes:
 						break
 				except:
 					print("Valor inválido. Digite novamente.")
-			
-			self.controller.adicionar_sabor(nome, valor)
+			sabor = Sabor(self.banco.createSaborId(), nome, valor)
+			self.banco.adicionarSabor(sabor)
 		except:
-			print("!!")
+			print("Não foi possivel adicionar o sabor.")
+			delay(1.5)
 
 	def __editar_sabor(self):
 		try:
-			id = input("Digite o id do sabor: ")
+			while (True):
+				id = input("Digite o id do sabor: ")
+
+				if id != "":
+					break
+				print("Por favor informe um id valido.")
+			
+			sabor = self.banco.getSaborPorId(id)
 
 			nome = input("Digite o nome do sabor: ")
+			
+			if nome != "":
+				sabor.nome = nome
 
 			while(True):
 				try:
@@ -181,9 +194,18 @@ class MenuOperacoes:
 						break
 				except ValueError:
 					print("Valor inválido. Digite novamente.")
-			self.controller.editar_sabor(id, nome, valor)
+			
+			sabor.valor = valor
+
+			self.banco.editarSabor(sabor)
 		except ValueError:
 			print("!!")
+
+		except Exception as e:
+			print(e)
+			delay(1.5)
+			clear_console()
+			return
 
 	def __excluir_sabor(self):
 		try:
@@ -195,7 +217,7 @@ class MenuOperacoes:
 	def __listar_sabores(self):
 		clear_console()
 		print("=== SABORES ===")
-		sabores = self.controller.listar_sabores()
+		sabores = self.banco.getSabores()
 		for i in sabores:
 			print(sabores[i])
 			print("-----------------------")

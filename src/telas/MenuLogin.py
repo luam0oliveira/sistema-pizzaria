@@ -15,6 +15,7 @@ class MenuLogin:
 			print("Autenticação:\n1 - Login como cliente\n2 - Login como funcionário\n3 - Registro de cliente\n0 - Sair")
 			try:
 				op = int(input())
+				print(self.banco.funcionarios)
 				match op:
 					case 1:
 						self.__login_cliente()

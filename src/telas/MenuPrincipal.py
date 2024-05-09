@@ -16,7 +16,6 @@ class MenuPrincipal:
 		while (self.running):
 			print("=== Bem vindo a pizzaria AHHAHASHDU! ===")
 			try: 
-
 				# autenticacao e registro de usuario
 				self.login()
 				
