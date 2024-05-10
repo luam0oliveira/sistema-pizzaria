@@ -38,7 +38,6 @@ class MenuLogin:
 			delay(1.5)
 			clear_console()
 
-
 	def __login_cliente(self):
 		clear_console()
 		print("==== Login de cliente ====")

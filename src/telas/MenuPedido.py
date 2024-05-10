@@ -150,5 +150,3 @@ class MenuPedido:
 		input("Aperte ENTER para voltar para o menu de pedido.")
 		clear_console()
 	
-
-		

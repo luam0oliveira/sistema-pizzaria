@@ -22,4 +22,3 @@ class Pessoa:
 	def setTelefone(self, telefone:str):
 		self.__telefone = telefone
 		
-

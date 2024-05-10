@@ -1,10 +1,9 @@
-from ast import ExceptHandler
-from turtle import clear
 from Banco import Banco
 from Cliente import Cliente
 from Complemento import Complemento
 from Funcionario import Funcionario
 from Sabor import Sabor
+from Usuario import Usuario
 from utils import clear_console, delay
 from telas.MenuPedido import MenuPedido
 
@@ -13,7 +12,7 @@ class MenuOperacoes:
 	def __init__(self, banco: Banco):
 		self.running = True
 		self.banco = banco
-		self.usuario = self.banco.usuario
+		self.usuario: Usuario = self.banco.usuario
 
 		if (isinstance(self.usuario, Funcionario)):
 			self.__runFuncionario()
@@ -193,6 +192,8 @@ class MenuOperacoes:
 			print("É necessário que preencha o cpf do funcionario")
 		
 		try:
+			if (cpf == self.usuario.getCpf()):
+				raise Exception("Não é possível se excluir do sistema.")
 			funcionario = self.banco.getFuncionarioPorCpf(cpf)
 
 			self.banco.removerFuncionario(funcionario)
@@ -396,6 +397,5 @@ class MenuOperacoes:
 			print(e)
 		delay(1.5)
 
-		
 	def __fazer_pedido(self):
 		MenuPedido(self.banco)

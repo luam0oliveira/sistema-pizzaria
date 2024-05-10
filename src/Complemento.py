@@ -1,6 +1,3 @@
-from uuid import uuid4
-
-
 class Complemento:
 	def __init__(self, id: str, nome:str, valor:float):
 		self.__id = id

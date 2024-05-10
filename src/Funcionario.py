@@ -12,6 +12,5 @@ class Funcionario(Usuario):
 	def setSalario(self, salario: float):
 		self.__salario = salario
 
-
 	def __str__(self) -> str:
 		return f"Nome: {self.getNome()}, CPF:{self.getCpf()}, telefone: {self.getTelefone()}"

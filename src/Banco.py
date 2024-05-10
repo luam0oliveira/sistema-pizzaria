@@ -70,14 +70,14 @@ class Banco:
 		self.funcionarios.pop(funcionario.getCpf())
 	
 	# metodos relacionados a sabor
-	def getSaborPorId(self, id: str):
+	def getSaborPorId(self, id: str) -> Sabor: 
 		sabor = self.sabores.get(id)
 
 		if not sabor:
 			raise Exception("Não existe sabor com esse id.")
 		return sabor
 	
-	def getSabores(self):
+	def getSabores(self) -> list[Sabor]:
 		return self.sabores
 	
 	def adicionarSabor(self, sabor: Sabor):
@@ -92,13 +92,13 @@ class Banco:
 		self.sabores.pop(sabor.id)
 
 	# metodos relacionados a complementos
-	def getComplementoPorId(self, id: str):
+	def getComplementoPorId(self, id: str) -> Complemento:
 		complemento = self.complementos.get(id)
 		if not complemento:
 			raise Exception("Complemento não encontrado.")
 		return complemento
 
-	def getComplementos(self):
+	def getComplementos(self) -> list[Complemento]:
 		return self.complementos
 
 	def adicionarComplemento(self, complemento: Complemento):
@@ -111,10 +111,12 @@ class Banco:
 	def removerComplemento(self, complemento: Complemento):
 		self.complementos.pop(complemento.getId())
 	
+	# metodo relacionados a cliente
 	def adicionarCliente(self, cliente: Cliente):
 		self.clientes[cliente.getId()] = cliente
 		self.incrementClienteId()
 	
+	# metodos relacionados a pedido
 	def finalizar_pedido(self, pedido: Pedido):
 		try:
 			if isinstance(self.usuario, Cliente) and len(pedido.pizzas) != 0:
@@ -124,5 +126,3 @@ class Banco:
 			return False
 		except Exception as e:
 			return False
-	
-	

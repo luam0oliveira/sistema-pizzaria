@@ -1,5 +1,4 @@
 from Pessoa import Pessoa
-from uuid import uuid4
 from bcrypt import gensalt, hashpw, checkpw
 
 
